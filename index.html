@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شرح نظام جيومولج - Geomolg</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            justify-content: center;
+        }
+
+        .nav button {
+            padding: 10px 20px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .nav button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav button.active {
+            background: #764ba2;
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+
+        /* Content */
+        .content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        /* Cards */
+        .card {
+            background: #f8f9fa;
+            border-right: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(-5px);
+        }
+
+        .card-title {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Icons */
+        .icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        /* Highlight */
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #856404;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #e7f3ff;
+            border-right: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-right: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-right: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #666;
+            border-top: 2px solid #e9ecef;
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .nav {
+                flex-direction: column;
+            }
+
+            .nav button {
+                width: 100%;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+        /* Diagram */
+        .diagram {
+            background: #f0f4ff;
+            border: 2px dashed #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🗺️ نظام جيومولج Geomolg</h1>
+            <p>شرح شامل وسهل الفهم لنظام خرائط الأراضي الفلسطيني</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('intro')">📖 المقدمة</button>
+            <button class="nav-btn" onclick="showSection('what-is')">❓ ما هو جيومولج؟</button>
+            <button class="nav-btn" onclick="showSection('how-works')">⚙️ كيف يعمل؟</button>
+            <button class="nav-btn" onclick="showSection('data')">📊 البيانات</button>
+            <button class="nav-btn" onclick="showSection('api')">🔌 الواجهة البرمجية</button>
+            <button class="nav-btn" onclick="showSection('app')">📱 التطبيق الجديد</button>
+            <button class="nav-btn" onclick="showSection('benefits')">✨ الفوائد</button>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+
+            <!-- Section 1: Introduction -->
+            <div id="intro" class="section active">
+                <h2>📖 مقدمة عن جيومولج</h2>
+                
+                <div class="info-box">
+                    <strong>💡 فكرة سريعة:</strong> جيومولج هو نظام حكومي فلسطيني يعرض خريطة رقمية لجميع قطع الأراضي في الضفة الغربية، مثل Google Maps لكن متخصص في الأراضي والعقارات.
+                </div>
+
+                <h3>🎯 الهدف الأساسي</h3>
+                <p>توفير معلومات دقيقة وموثوقة عن:</p>
+                <ul>
+                    <li>📍 مواقع قطع الأراضي على الخريطة</li>
+                    <li>👤 أسماء ملاك الأراضي</li>
+                    <li>📏 مساحة كل قطعة أرض</li>
+                    <li>🏘️ المجتمعات والمحافظات</li>
+                    <li>📋 نوع التسجيل والحالة القانونية</li>
+                </ul>
+
+                <h3>🇵🇸 من يستخدمه؟</h3>
+                <ul>
+                    <li>🏛️ الحكومة الفلسطينية</li>
+                    <li>⚖️ المحاكم والجهات القانونية</li>
+                    <li>🏢 المكاتب العقارية</li>
+                    <li>👨‍💼 المواطنون والمستثمرون</li>
+                    <li>📊 الباحثون والدارسون</li>
+                </ul>
+            </div>
+
+            <!-- Section 2: What is Geomolg -->
+            <div id="what-is" class="section">
+                <h2>❓ ما هو جيومولج بالضبط؟</h2>
+
+                <div class="card">
+                    <div class="card-title">🗺️ نظام معلومات جغرافية (GIS)</div>
+                    <p>جيومولج هو نظام متخصص في تخزين وعرض المعلومات الجغرافية. يجمع بين:</p>
+                    <ul>
+                        <li><strong>الخرائط:</strong> صور جوية للأراضي</li>
+                        <li><strong>البيانات:</strong> معلومات عن كل قطعة أرض</li>
+                        <li><strong>التكنولوجيا:</strong> أنظمة حاسوبية متقدمة</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📱 كيف تراه المستخدم؟</div>
+                    <p>عندما تفتح جيومولج على الإنترنت أو الهاتف، ترى:</p>
+                    <ul>
+                        <li>خريطة تفاعلية لفلسطين</li>
+                        <li>قطع الأراضي ملونة ومحددة بحدود واضحة</li>
+                        <li>أرقام على كل قطعة أرض</li>
+                        <li>معلومات عند الضغط على أي قطعة</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🏛️ من أنشأه؟</div>
+                    <p><strong>وزارة الحكم المحلي الفلسطينية (MOLG)</strong></p>
+                    <p>تم إطلاقه في يناير 2017 ويتم تحديثه بشكل مستمر</p>
+                </div>
+
+                <h3>🔍 المميزات الرئيسية</h3>
+                <table>
+                    <tr>
+                        <th>المميزة</th>
+                        <th>الشرح</th>
+                    </tr>
+                    <tr>
+                        <td>🌐 متاح للجميع</td>
+                        <td>لا تحتاج حساب أو كلمة مرور للدخول</td>
+                    </tr>
+                    <tr>
+                        <td>📊 بيانات شاملة</td>
+                        <td>48 معلومة عن كل قطعة أرض</td>
+                    </tr>
+                    <tr>
+                        <td>🔤 ثنائي اللغة</td>
+                        <td>عربي وإنجليزي</td>
+                    </tr>
+                    <tr>
+                        <td>🎯 دقيق جداً</td>
+                        <td>الحدود محددة بدقة عالية</td>
+                    </tr>
+                    <tr>
+                        <td>⚡ سريع</td>
+                        <td>يحمل البيانات بسرعة</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Section 3: How it Works -->
+            <div id="how-works" class="section">
+                <h2>⚙️ كيف يعمل النظام؟</h2>
+
+                <h3>🔄 المسار الكامل للبيانات</h3>
+                <div class="diagram">
+┌─────────────────────────────────────────────────────────┐
+│                    أنت (المستخدم)                      │
+│              تفتح التطبيق على هاتفك                    │
+└────────────────────┬────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│                 خادم الإنترنت                          │
+│            (geomolg.ps الموقع الرسمي)                 │
+└────────────────────┬────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│              قاعدة البيانات الضخمة                      │
+│        (تحتوي على ملايين قطع الأراضي)                 │
+└────────────────────┬────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────┐
+│                    الخريطة                             │
+│              تظهر على شاشتك ملونة                      │
+└─────────────────────────────────────────────────────────┘
+                </div>
+
+                <h3>📍 نظام الإحداثيات</h3>
+                <div class="info-box">
+                    <strong>ما هو نظام الإحداثيات؟</strong>
+                    <p>مثل نظام الشارع والرقم في العنوان، لكن للخريطة. كل نقطة على الأرض لها رقمان (X و Y) يحددان موقعها بدقة.</p>
+                    <p>جيومولج يستخدم نظام خاص يسمى <span class="highlight">EPSG:28191</span> وهو مخصص لفلسطين.</p>
+                </div>
+
+                <h3>🔌 الواجهة البرمجية (API)</h3>
+                <p>هذا هو "الجسر" الذي يربط بين التطبيقات والبيانات:</p>
+                <div class="card">
+                    <div class="card-title">📡 كيف يعمل API؟</div>
+                    <ul>
+                        <li>التطبيق يطلب بيانات معينة</li>
+                        <li>الخادم يبحث عن البيانات</li>
+                        <li>يرسل البيانات للتطبيق</li>
+                        <li>التطبيق يعرضها على الشاشة</li>
+                    </ul>
+                </div>
+
+                <h3>🔍 أمثلة على الطلبات</h3>
+                <p>يمكن للتطبيق أن يطلب:</p>
+                <ul>
+                    <li>🔎 "أريد جميع قطع الأراضي في رام الله"</li>
+                    <li>🔎 "أريد معلومات القطعة رقم 133"</li>
+                    <li>🔎 "أريد جميع الأراضي التي يملكها أحمد"</li>
+                    <li>🔎 "أريد الأراضي في منطقة معينة على الخريطة"</li>
+                </ul>
+            </div>
+
+            <!-- Section 4: Data -->
+            <div id="data" class="section">
+                <h2>📊 البيانات المتوفرة</h2>
+
+                <div class="info-box">
+                    <strong>💾 كم معلومة عن كل قطعة أرض؟</strong>
+                    <p><span class="highlight">48 معلومة مختلفة!</span> هذا يعني أن كل قطعة أرض لها 48 حقل بيانات.</p>
+                </div>
+
+                <h3>📋 أهم المعلومات</h3>
+                <table>
+                    <tr>
+                        <th>المعلومة</th>
+                        <th>الشرح</th>
+                        <th>مثال</th>
+                    </tr>
+                    <tr>
+                        <td><strong>رقم القطعة</strong></td>
+                        <td>الرقم الفريد لكل أرض</td>
+                        <td>133</td>
+                    </tr>
+                    <tr>
+                        <td><strong>رقم الحوض</strong></td>
+                        <td>المنطقة التي تنتمي إليها</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td><strong>اسم المجتمع</strong></td>
+                        <td>القرية أو المدينة</td>
+                        <td>عجة (Ajja)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>المحافظة</strong></td>
+                        <td>المحافظة الكبرى</td>
+                        <td>جنين (Jenin)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>اسم المالك</strong></td>
+                        <td>من يملك الأرض</td>
+                        <td>أحمد محمد علي</td>
+                    </tr>
+                    <tr>
+                        <td><strong>المساحة</strong></td>
+                        <td>حجم الأرض بالمتر المربع</td>
+                        <td>2,647 م²</td>
+                    </tr>
+                    <tr>
+                        <td><strong>نوع التسجيل</strong></td>
+                        <td>حالة التسجيل القانونية</td>
+                        <td>تسوية منتهية</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الحدود</strong></td>
+                        <td>شكل الأرض على الخريطة</td>
+                        <td>مضلع (Polygon)</td>
+                    </tr>
+                </table>
+
+                <h3>🗂️ تنظيم البيانات</h3>
+                <div class="card">
+                    <div class="card-title">📁 كيف تُخزن البيانات؟</div>
+                    <p>البيانات مخزنة في قواعد بيانات ضخمة (مثل جداول Excel الضخمة جداً):</p>
+                    <ul>
+                        <li><strong>PostgreSQL:</strong> قاعدة بيانات عامة</li>
+                        <li><strong>SDE Geodatabases:</strong> قاعدة بيانات متخصصة للخرائط</li>
+                    </ul>
+                    <p>هذه القواعد تحتفظ بملايين السجلات!</p>
+                </div>
+
+                <h3>📸 الصور الجوية</h3>
+                <div class="success-box">
+                    <strong>✅ صور حقيقية من الأقمار الصناعية</strong>
+                    <p>جيومولج يستخدم صور جوية عالية الجودة تظهر الأراضي كما هي في الواقع. هذه الصور تساعد في التحقق من الحدود والمواقع.</p>
+                </div>
+            </div>
+
+            <!-- Section 5: API -->
+            <div id="api" class="section">
+                <h2>🔌 الواجهة البرمجية (API)</h2>
+
+                <div class="info-box">
+                    <strong>🤔 ما هي الواجهة البرمجية؟</strong>
+                    <p>هي طريقة تقنية تسمح للبرامج بالتحدث مع بعضها. مثل الهاتف - تتصل بشخص ما وتطلب منه معلومة، وهو يجيبك.</p>
+                </div>
+
+                <h3>🌐 الخادم الرئيسي</h3>
+                <div class="code-block">
+https://orthophotos.geomolg.ps/adaptor/rest/services/
+                </div>
+                <p>هذا هو العنوان الذي يتصل به التطبيق للحصول على البيانات</p>
+
+                <h3>📡 خدمات متعددة</h3>
+                <table>
+                    <tr>
+                        <th>اسم الخدمة</th>
+                        <th>الوصف</th>
+                    </tr>
+                    <tr>
+                        <td><strong>ParcelsRegistered_11</strong></td>
+                        <td>قطع الأراضي المسجلة الرسمية</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Blocks_02</strong></td>
+                        <td>الأحواض والمناطق</td>
+                    </tr>
+                    <tr>
+                        <td><strong>QuartersRegistered</strong></td>
+                        <td>الأحياء والمناطق السكنية</td>
+                    </tr>
+                    <tr>
+                        <td><strong>StateLand_02</strong></td>
+                        <td>الأراضي الحكومية</td>
+                    </tr>
+                </table>
+
+                <h3>🔍 أمثلة على الطلبات</h3>
+
+                <div class="card">
+                    <div class="card-title">مثال 1: البحث عن قطعة أرض برقمها</div>
+                    <div class="code-block">
+البحث عن: القطعة رقم 133
+النتيجة: جميع المعلومات عن هذه القطعة
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">مثال 2: البحث عن جميع الأراضي في قرية معينة</div>
+                    <div class="code-block">
+البحث عن: جميع القطع في قرية عجة
+النتيجة: 100+ قطعة أرض مع كل معلوماتها
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">مثال 3: البحث عن أراضي صاحب معين</div>
+                    <div class="code-block">
+البحث عن: جميع الأراضي التي يملكها أحمد
+النتيجة: 5 قطع أرض مع المساحة والموقع
+                    </div>
+                </div>
+
+                <h3>✅ مميزات الـ API</h3>
+                <ul>
+                    <li>✔️ <strong>مفتوح للجميع:</strong> لا تحتاج تصريح خاص</li>
+                    <li>✔️ <strong>سريع جداً:</strong> يرد في أقل من ثانية</li>
+                    <li>✔️ <strong>موثوق:</strong> البيانات من مصدر حكومي رسمي</li>
+                    <li>✔️ <strong>مرن:</strong> يمكن طلب البيانات بطرق مختلفة</li>
+                    <li>✔️ <strong>ثنائي اللغة:</strong> يدعم العربية والإنجليزية</li>
+                </ul>
+
+                <h3>⚠️ قيود معقولة</h3>
+                <ul>
+                    <li>🔹 يمكن طلب 2000 سجل كحد أقصى في مرة واحدة</li>
+                    <li>🔹 إذا كان هناك أكثر من 2000، يجب طلبها على دفعات</li>
+                    <li>🔹 هذا لتجنب إرهاق الخادم</li>
+                </ul>
+            </div>
+
+            <!-- Section 6: New App -->
+            <div id="app" class="section">
+                <h2>📱 التطبيق الجديد الذي سيتم بناؤه</h2>
+
+                <div class="success-box">
+                    <strong>🎉 ما الجديد؟</strong>
+                    <p>سيتم بناء تطبيق <strong>Flutter</strong> حديث يعمل على الهواتف الذكية (iPhone و Android) ويوفر تجربة أفضل وأسهل.</p>
+                </div>
+
+                <h3>🎯 ميزات التطبيق الجديد</h3>
+
+                <div class="card">
+                    <div class="card-title">🗺️ خريطة تفاعلية</div>
+                    <ul>
+                        <li>عرض جميع قطع الأراضي على خريطة</li>
+                        <li>رقم القطعة مكتوب على كل قطعة</li>
+                        <li>ألوان مختلفة لكل محافظة</li>
+                        <li>تكبير وتصغير سلس</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🔍 بحث قوي</div>
+                    <ul>
+                        <li>البحث برقم القطعة</li>
+                        <li>البحث باسم القرية</li>
+                        <li>البحث باسم المالك</li>
+                        <li>البحث بالمحافظة</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📊 معلومات مفصلة</div>
+                    <ul>
+                        <li>عند الضغط على قطعة أرض، تظهر كل المعلومات</li>
+                        <li>المساحة والحدود</li>
+                        <li>اسم المالك والمجتمع</li>
+                        <li>الحالة القانونية</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🌐 دعم اللغات</div>
+                    <ul>
+                        <li>واجهة عربية كاملة</li>
+                        <li>واجهة إنجليزية كاملة</li>
+                        <li>يمكن التبديل بسهولة</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">⚡ سرعة وكفاءة</div>
+                    <ul>
+                        <li>تحميل سريع جداً</li>
+                        <li>حفظ البيانات محلياً للعمل بدون إنترنت</li>
+                        <li>واجهة سلسة وسريعة الاستجابة</li>
+                    </ul>
+                </div>
+
+                <h3>🛠️ التقنيات المستخدمة</h3>
+                <table>
+                    <tr>
+                        <th>التقنية</th>
+                        <th>الفائدة</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Flutter</strong></td>
+                        <td>تطبيق يعمل على iPhone و Android بنفس الكود</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google Maps</strong></td>
+                        <td>خريطة تفاعلية احترافية</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SQLite</strong></td>
+                        <td>حفظ البيانات على الهاتف</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Geomolg API</strong></td>
+                        <td>الحصول على البيانات الحديثة</td>
+                    </tr>
+                </table>
+
+                <h3>📱 كيف سيبدو التطبيق؟</h3>
+                <div class="diagram">
+┌──────────────────────────┐
+│   تطبيق Geomolg الجديد   │
+├──────────────────────────┤
+│                          │
+│    [🗺️  الخريطة]         │
+│    ┌────────────────┐   │
+│    │ ▪ قطعة 133    │   │
+│    │ ▪ قطعة 247    │   │
+│    │ ▪ قطعة 53     │   │
+│    └────────────────┘   │
+│                          │
+│  [🔍 بحث] [☰ قائمة]    │
+│                          │
+└──────────────────────────┘
+                </div>
+            </div>
+
+            <!-- Section 7: Benefits -->
+            <div id="benefits" class="section">
+                <h2>✨ الفوائد والأهمية</h2>
+
+                <h3>👨‍💼 للمواطنين</h3>
+                <div class="card">
+                    <ul>
+                        <li>✅ معرفة معلومات أراضيهم بسهولة</li>
+                        <li>✅ التحقق من الملكية</li>
+                        <li>✅ البحث عن أراضي للشراء</li>
+                        <li>✅ معرفة المساحة والحدود بدقة</li>
+                    </ul>
+                </div>
+
+                <h3>⚖️ للجهات الحكومية والقانونية</h3>
+                <div class="card">
+                    <ul>
+                        <li>✅ توثيق الملكيات بشكل رسمي</li>
+                        <li>✅ حل النزاعات العقارية</li>
+                        <li>✅ التخطيط الحضري والتطوير</li>
+                        <li>✅ إحصائيات دقيقة عن الأراضي</li>
+                    </ul>
+                </div>
+
+                <h3>🏢 للمكاتب العقارية</h3>
+                <div class="card">
+                    <ul>
+                        <li>✅ معلومات موثوقة للعملاء</li>
+                        <li>✅ تسهيل عملية البيع والشراء</li>
+                        <li>✅ توثيق العقود</li>
+                        <li>✅ تقديم خدمات أفضل</li>
+                    </ul>
+                </div>
+
+                <h3>📊 للباحثين والدارسين</h3>
+                <div class="card">
+                    <ul>
+                        <li>✅ بيانات حقيقية وموثوقة</li>
+                        <li>✅ دراسة التطور العمراني</li>
+                        <li>✅ أبحاث عن الملكية والأراضي</li>
+                        <li>✅ إحصائيات دقيقة</li>
+                    </ul>
+                </div>
+
+                <h3>💰 القيمة الاقتصادية</h3>
+                <div class="warning-box">
+                    <strong>⚠️ مهم جداً:</strong>
+                    <p>هذا النظام يوفر <strong>الشفافية والثقة</strong> في السوق العقاري، مما يعزز الاستثمار والتطور الاقتصادي.</p>
+                </div>
+
+                <h3>🌍 الأهمية الوطنية</h3>
+                <ul>
+                    <li>🇵🇸 توثيق الملكيات الفلسطينية</li>
+                    <li>🇵🇸 حماية حقوق الملاك</li>
+                    <li>🇵🇸 الحفاظ على السجلات الرسمية</li>
+                    <li>🇵🇸 دعم السيادة الوطنية</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>📄 شرح شامل لنظام جيومولج Geomolg | تم الإعداد بواسطة فريق التطوير</p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #999;">
+                © 2024 جميع الحقوق محفوظة | نظام معلومات جغرافية فلسطيني
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
+
